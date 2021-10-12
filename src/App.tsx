@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+import "./App.css";
 
-function App() {
+export default function App() {
+  const wave = () => {};
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="mainContainer">
+      <div className="dataContainer">
+        <div className="header">👋 Hey there!</div>
+
+        <div className="bio">
+          I am Jonathan and I worked in data science before becoming a
+          full-stack engineer at Caper! Connect your Ethereum wallet and wave at
+          me!
+        </div>
+
+        <button className="waveButton" onClick={wave}>
+          Wave at Me
+        </button>
+      </div>
     </div>
   );
 }
-
-export default App;
