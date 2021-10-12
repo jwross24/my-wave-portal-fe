@@ -1,10 +1,8 @@
 /// <reference types="react-scripts" />
 
-// eslint-disable-next-line node/no-unpublished-import
-import {MetaMaskInpageProvider} from '@metamask/providers';
-
+import {ethers} from 'ethers';
 declare global {
   interface Window {
-    ethereum: MetaMaskInpageProvider;
+    ethereum: ethers.providers.ExternalProvider;
   }
 }
