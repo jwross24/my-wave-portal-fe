@@ -42,7 +42,7 @@ function App() {
       }
 
       const accounts = await ethereum.request<string[]>({
-        method: 'eth_accounts',
+        method: 'eth_requestAccounts',
       });
 
       if (accounts && accounts.length !== 0) {
