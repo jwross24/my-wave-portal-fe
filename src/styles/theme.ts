@@ -6,6 +6,10 @@ let theme = createTheme({
       main: '#430089',
       contrastText: '#FFFFFF',
     },
+    secondary: {
+      main: '#82FFA1',
+      contrastText: '#000000',
+    },
     text: {
       primary: '#242E35',
       secondary: '#646c73',

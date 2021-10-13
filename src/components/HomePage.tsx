@@ -9,8 +9,11 @@ import Paper from '@mui/material/Paper';
 import {styled} from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
+import {MessageInput} from './MessageInput';
+import {WavesTable} from './WavesTable';
 import theme from '../styles/theme';
 import abi from '../utils/WavePortal.json';
+import {getAllWaves} from '../utils/wavePortal';
 
 const StyledLoadingButton = styled(LoadingButton)<LoadingButtonProps>(
   ({theme}) => ({
@@ -20,13 +23,26 @@ const StyledLoadingButton = styled(LoadingButton)<LoadingButtonProps>(
   })
 );
 
+export interface CleanedWave {
+  address: string;
+  message: string;
+  timestamp: Date;
+}
+
 function HomePage() {
   const [currentAccount, setCurrentAccount] = useState<string>('');
   const [waveCount, setWaveCount] = useState<number>(0);
   const [myWaveCount, setMyWaveCount] = useState<number>(0);
+  const [allWaves, setAllWaves] = useState<CleanedWave[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const contractAddress = '0x509455c03Ba59f00ce4dcAD964C615A4f0A053e5';
+  const [message, setMessage] = useState('');
+
+  const contractAddress = '0xFb7e7098fB41D83D4DB8A85e0f995e16bAd4E0EC';
   const contractABI = abi.abi;
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setMessage(event.target.value);
+  }
 
   async function checkIfWalletIsConnected() {
     try {
@@ -47,6 +63,8 @@ function HomePage() {
         const account = accounts[0];
         console.log('Found an authorized account: ', account);
         setCurrentAccount(account);
+        const allWaves = await getAllWaves();
+        setAllWaves(allWaves);
       } else {
         console.log('No authorized account found');
       }
@@ -98,7 +116,7 @@ function HomePage() {
         console.log('Retrieved total wave count...', count.toNumber());
 
         setIsLoading(true);
-        const waveTxn = await wavePortalContract.wave();
+        const waveTxn = await wavePortalContract.wave(message);
         console.log('Mining...', waveTxn.hash);
 
         await waveTxn.wait();
@@ -130,74 +148,99 @@ function HomePage() {
         justifyContent: 'center',
         background: 'linear-gradient(to right bottom, #430089, #82ffa1)',
         minHeight: '100vh',
+        borderRadius: 0,
       }}
     >
-      <Card
-        sx={{
-          mt: theme.spacing(8),
-          pt: theme.spacing(4),
-          maxWidth: 600,
-          maxHeight: 300,
-        }}
-      >
-        <Typography variant="h3" sx={{textAlign: 'center'}}>
-          👋 Hey there!
-        </Typography>
-
-        <CardContent
-          sx={{
-            display: 'flex-column',
-            textAlign: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Typography
-            variant="body1"
-            color={theme.palette.text.secondary}
+      <Grid container direction="column" alignItems="center" spacing={2}>
+        <Grid item>
+          <Card
             sx={{
-              textAlign: 'center',
-              mt: theme.spacing(2),
+              mt: theme.spacing(8),
+              pt: theme.spacing(4),
+              maxWidth: 600,
+              maxHeight: 400,
             }}
           >
-            I am Jonathan and I worked in data science before becoming a
-            full-stack engineer at Caper! Connect your Ethereum wallet and wave
-            at me!
-          </Typography>
+            <Typography variant="h3" sx={{textAlign: 'center'}}>
+              👋 Nice to meet you!
+            </Typography>
 
-          <Grid container>
-            <Grid item xs={12} sm={currentAccount ? 12 : 6}>
-              <StyledLoadingButton
-                loading={isLoading}
-                variant="contained"
-                onClick={wave}
+            <CardContent
+              sx={{
+                display: 'flex-column',
+                textAlign: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography
+                variant="body1"
+                color={theme.palette.text.secondary}
+                sx={{
+                  textAlign: 'center',
+                  mt: theme.spacing(2),
+                }}
               >
-                Wave at Me
-              </StyledLoadingButton>
-            </Grid>
+                I am Jonathan and I worked in data science before becoming a
+                full-stack engineer at Caper! Connect your Ethereum wallet and
+                wave at me!
+              </Typography>
 
-            {!currentAccount && (
-              <Grid item xs={12} sm={6}>
-                <StyledLoadingButton
-                  variant="contained"
-                  onClick={connectWallet}
-                >
-                  Connect Wallet
-                </StyledLoadingButton>
+              <Grid
+                container
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                sx={{mt: theme.spacing(1.5)}}
+              >
+                {currentAccount && (
+                  <Grid item xs={12} sm={currentAccount ? 12 : 6}>
+                    <StyledLoadingButton
+                      size="large"
+                      loading={isLoading}
+                      disabled={!currentAccount}
+                      variant="contained"
+                      onClick={wave}
+                    >
+                      Wave at Me
+                    </StyledLoadingButton>
+                  </Grid>
+                )}
+
+                {!currentAccount && (
+                  <Grid item xs={12} sm={!currentAccount ? 12 : 6}>
+                    <StyledLoadingButton
+                      size="large"
+                      variant="contained"
+                      onClick={connectWallet}
+                    >
+                      Connect Wallet
+                    </StyledLoadingButton>
+                  </Grid>
+                )}
+
+                {currentAccount && (
+                  <Grid item xs={6}>
+                    <MessageInput value={message} handleChange={handleChange} />
+                  </Grid>
+                )}
               </Grid>
-            )}
-          </Grid>
-          <Grid container>
-            <Grid item xs={6}>
-              <Typography variant="h5">Total waves:</Typography>{' '}
-              <Typography variant="body1">{waveCount}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="h5">Waves by me:</Typography>{' '}
-              <Typography variant="body1">{myWaveCount}</Typography>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+              <Grid container sx={{mt: theme.spacing(8)}}>
+                <Grid item xs={6}>
+                  <Typography variant="h5">Total waves:</Typography>{' '}
+                  <Typography variant="body1">{waveCount}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="h5">Waves by me:</Typography>{' '}
+                  <Typography variant="body1">{myWaveCount}</Typography>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item>
+          <WavesTable allWaves={allWaves} />
+        </Grid>
+      </Grid>
     </Paper>
   );
 }
