@@ -2,7 +2,7 @@ import {ethers} from 'ethers';
 
 import abi from './WavePortal.json';
 
-const contractAddress = '0xFb7e7098fB41D83D4DB8A85e0f995e16bAd4E0EC';
+const contractAddress = '0x4039fF1892eefc77a217Da83702813f430Dad08e';
 const contractABI = abi.abi;
 
 export interface CleanedWave {
@@ -14,7 +14,7 @@ export interface CleanedWave {
 export interface Wave {
   waver: string;
   message: string;
-  timestamp: ethers.BigNumber;
+  blockNumber: ethers.BigNumber;
 }
 
 export async function getAllWaves() {
@@ -32,7 +32,7 @@ export async function getAllWaves() {
       const waves: Wave[] = await wavePortalContract.getAllWaves();
 
       const promises = waves.map(async wave => {
-        const block = await provider.getBlock(wave.timestamp.toNumber());
+        const block = await provider.getBlock(wave.blockNumber.toNumber());
 
         return {
           address: wave.waver,

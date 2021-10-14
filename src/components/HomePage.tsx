@@ -13,7 +13,7 @@ import {MessageInput} from './MessageInput';
 import {WavesTable} from './WavesTable';
 import theme from '../styles/theme';
 import abi from '../utils/WavePortal.json';
-import {getAllWaves} from '../utils/wavePortal';
+import {CleanedWave, getAllWaves} from '../utils/wavePortal';
 
 const StyledLoadingButton = styled(LoadingButton)<LoadingButtonProps>(
   ({theme}) => ({
@@ -22,12 +22,6 @@ const StyledLoadingButton = styled(LoadingButton)<LoadingButtonProps>(
     padding: theme.spacing(1),
   })
 );
-
-export interface CleanedWave {
-  address: string;
-  message: string;
-  timestamp: Date;
-}
 
 function HomePage() {
   const [currentAccount, setCurrentAccount] = useState<string>('');

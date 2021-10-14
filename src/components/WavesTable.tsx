@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import React from 'react';
 
-import {CleanedWave} from './HomePage';
+import {CleanedWave} from '../utils/wavePortal';
 
 interface WavesTableProps {
   allWaves: CleanedWave[];
