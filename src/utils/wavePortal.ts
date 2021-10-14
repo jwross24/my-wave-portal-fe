@@ -2,8 +2,8 @@ import {ethers} from 'ethers';
 
 import abi from './WavePortal.json';
 
-const contractAddress = '0x4039fF1892eefc77a217Da83702813f430Dad08e';
-const contractABI = abi.abi;
+export const contractAddress = '0x4039fF1892eefc77a217Da83702813f430Dad08e';
+export const contractABI = abi.abi;
 
 export interface CleanedWave {
   address: string;
@@ -46,7 +46,7 @@ export async function getAllWaves() {
       return [];
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return [];
   }
 }

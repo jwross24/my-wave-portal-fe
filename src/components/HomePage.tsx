@@ -12,8 +12,12 @@ import Typography from '@mui/material/Typography';
 import {MessageInput} from './MessageInput';
 import {WavesTable} from './WavesTable';
 import theme from '../styles/theme';
-import abi from '../utils/WavePortal.json';
-import {CleanedWave, getAllWaves} from '../utils/wavePortal';
+import {
+  contractABI,
+  contractAddress,
+  CleanedWave,
+  getAllWaves,
+} from '../utils/wavePortal';
 
 const StyledLoadingButton = styled(LoadingButton)<LoadingButtonProps>(
   ({theme}) => ({
@@ -30,9 +34,6 @@ function HomePage() {
   const [allWaves, setAllWaves] = useState<CleanedWave[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState('');
-
-  const contractAddress = '0xFb7e7098fB41D83D4DB8A85e0f995e16bAd4E0EC';
-  const contractABI = abi.abi;
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setMessage(event.target.value);
