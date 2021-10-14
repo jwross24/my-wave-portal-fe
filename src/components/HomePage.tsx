@@ -193,7 +193,7 @@ function HomePage() {
                 sx={{mt: theme.spacing(1.5)}}
               >
                 {currentAccount && (
-                  <Grid item xs={12} sm={currentAccount ? 12 : 6}>
+                  <Grid item xs={12}>
                     <StyledLoadingButton
                       size="large"
                       loading={isLoading}
@@ -207,7 +207,7 @@ function HomePage() {
                 )}
 
                 {!currentAccount && (
-                  <Grid item xs={12} sm={!currentAccount ? 12 : 6}>
+                  <Grid item xs={12}>
                     <StyledLoadingButton
                       size="large"
                       variant="contained"
