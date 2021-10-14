@@ -2,7 +2,7 @@ import {ethers} from 'ethers';
 
 import abi from './WavePortal.json';
 
-export const contractAddress = '0x4039fF1892eefc77a217Da83702813f430Dad08e';
+export const contractAddress = '0x8C166dd0eb6a0690B5D4772827fcab9053E13fdA';
 export const contractABI = abi.abi;
 
 export interface CleanedWave {

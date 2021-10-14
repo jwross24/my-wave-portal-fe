@@ -120,8 +120,11 @@ function HomePage() {
 
         count = await wavePortalContract.getTotalWaves();
         myCount = await wavePortalContract.getWaveCount(signerAddress);
+        const allWaves = await getAllWaves();
+
         setWaveCount(count.toNumber());
         setMyWaveCount(myCount.toNumber());
+        setAllWaves(allWaves);
         console.log('Retrieved total wave count...', count.toNumber());
       } else {
         console.log("Ethereum object doesn't exist!");
