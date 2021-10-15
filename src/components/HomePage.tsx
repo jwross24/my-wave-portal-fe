@@ -17,6 +17,7 @@ import {
   contractAddress,
   CleanedWave,
   getAllWaves,
+  Wave,
 } from '../utils/wavePortal';
 
 const StyledLoadingButton = styled(LoadingButton)<LoadingButtonProps>(
@@ -111,7 +112,9 @@ function HomePage() {
         console.log('Retrieved total wave count...', count.toNumber());
 
         setIsLoading(true);
-        const waveTxn = await wavePortalContract.wave(message);
+        const waveTxn = await wavePortalContract.wave(message, {
+          gasLimit: 300000,
+        });
         console.log('Mining...', waveTxn.hash);
 
         await waveTxn.wait();
@@ -120,11 +123,11 @@ function HomePage() {
 
         count = await wavePortalContract.getTotalWaves();
         myCount = await wavePortalContract.getWaveCount(signerAddress);
-        const allWaves = await getAllWaves();
+        const waves = await getAllWaves();
 
         setWaveCount(count.toNumber());
         setMyWaveCount(myCount.toNumber());
-        setAllWaves(allWaves);
+        setAllWaves(waves);
         console.log('Retrieved total wave count...', count.toNumber());
       } else {
         console.log("Ethereum object doesn't exist!");
