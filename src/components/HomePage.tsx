@@ -129,6 +129,20 @@ function HomePage() {
         setMyWaveCount(myCount.toNumber());
         setAllWaves(waves);
         console.log('Retrieved total wave count...', count.toNumber());
+
+        wavePortalContract.on('NewWave', async (wave: Wave) => {
+          console.log('NewWave', wave.waver, wave.message, wave.blockNumber);
+
+          const block = await provider.getBlock(wave.blockNumber.toNumber());
+          setAllWaves(prevState => [
+            ...prevState,
+            {
+              address: wave.waver,
+              message: wave.message,
+              timestamp: new Date(block.timestamp * 1000),
+            },
+          ]);
+        });
       } else {
         console.log("Ethereum object doesn't exist!");
       }
